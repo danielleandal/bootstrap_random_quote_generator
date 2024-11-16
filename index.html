@@ -6,44 +6,21 @@
     <title>Random Quote Generator</title>
 
     <!-- Bootstrap CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
-
-    <script>
-        window.onload = genQuote;
-
-        const quoteBank = [
-            { quote: "The only thing we have to fear is fear itself.", author: "Franklin D Roosevelt" },
-            { quote: "All the world's a stage, and all the men and women merely players.", author: "Shakespeare" },
-            { quote: "Genius is one percent inspiration and ninety-nine percent perspiration.", author: "Thomas Edison" },
-            { quote: "The greatest glory in living lies not in never falling, but in rising every time we fall.", author: "Nelson Mandela" },
-            { quote: "The way to get started is to quit talking and begin doing.", author: "Walt Disney" }
-        ];
-
-        function genQuote() {
-            const random = Math.floor(Math.random() * quoteBank.length);
-            const selectedQuote = quoteBank[random].quote;
-            const selectedAuthor = quoteBank[random].author;
-
-            document.getElementById("text").innerText = `"${selectedQuote}"`;
-            document.getElementById("author").innerText = `- ${selectedAuthor}`;
-
-            const twitterLink = `https://twitter.com/intent/tweet?hashtags=quotes&related=freecodecamp&text=${encodeURIComponent('"' + selectedQuote + '" - ' + selectedAuthor)}`;
-            document.getElementById("tweet-quote").href = twitterLink;
-        }
-    </script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
 
     <style>
-        /* Centering the entire body */
+        /* Centering the entire body and adding transition for background color */
         body {
             display: flex;
             align-items: center;
             justify-content: center;
             height: 100vh;
-            background-color: #f5f7fa;
             margin: 0;
+            background-color: #f5f7fa;
+            transition: background-color 1s ease;
         }
 
-        /* Centering the quote box */
+        /* Styling the quote box */
         #quote-box {
             background-color: #ffffff;
             border-radius: 15px;
@@ -58,6 +35,7 @@
             background-color: #b8cde8;
             color: white;
             font-weight: bold;
+            transition: background-color 1s ease;
         }
 
         #text {
@@ -72,7 +50,7 @@
         }
 
         button {
-            background-color: #1b3321;
+            background-color: #334337;
             border: none;
             color: white;
             cursor: pointer;
@@ -81,7 +59,7 @@
         }
 
         button:hover {
-            background-color: #218838;
+            background-color: #5fa06d;
             transform: translateY(-3px);
         }
 
@@ -101,18 +79,74 @@
     <div class="d-flex align-items-center justify-content-center w-100">
         <div id="quote-box" class="card">
             <div class="card-header text-center">
-                Random Quote Machine
+                <h1>Random Quote Machine</h1>
             </div>
             <div class="card-body text-center">
                 <h5 class="card-title" id="text"></h5>
                 <p class="card-text" id="author"></p>
-                <button id="new-quote" onclick="genQuote()" class="btn btn-success mt-3">New Quote</button>
+                <button id="new-quote" class="btn btn-success mt-3">New Quote</button>
                 <a href="https://twitter.com/intent/tweet" id="tweet-quote" class="btn btn-primary mt-3 ms-2" target="_blank">Tweet Quote</a>
             </div>
         </div>
     </div>
 
-    <!-- Bootstrap JS Bundle -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+    <!-- JavaScript for generating quotes and changing background color -->
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const quoteBank = [
+                { quote: "The only thing we have to fear is fear itself.", author: "Franklin D Roosevelt" },
+                { quote: "All the world's a stage, and all the men and women merely players.", author: "Shakespeare" },
+                { quote: "Genius is one percent inspiration and ninety-nine percent perspiration.", author: "Thomas Edison" },
+                { quote: "The greatest glory in living lies not in never falling, but in rising every time we fall.", author: "Nelson Mandela" },
+                { quote: "The way to get started is to quit talking and begin doing.", author: "Walt Disney" }
+            ];
+
+            // Array of pastel colors
+            const colors = [
+                "#FFDDC1", // light peach
+                "#FFD1DC", // light pink
+                "#C1E1C1", // pastel green
+                "#D4C1EC", // pastel lavender
+                "#F0E4D7", // light cream
+                "#A1C4FD", // pastel blue
+                "#FFB6B9", // pastel coral
+                "#D3F8E2", // pastel mint
+                "#FFF5BA", // pastel yellow
+                "#FDE2E4"  // soft pink
+            ];
+
+            function genQuote() {
+                // Generate a random quote
+                const randomQuoteIndex = Math.floor(Math.random() * quoteBank.length);
+                const selectedQuote = quoteBank[randomQuoteIndex].quote;
+                const selectedAuthor = quoteBank[randomQuoteIndex].author;
+
+                document.getElementById("text").innerText = `"${selectedQuote}"`;
+                document.getElementById("author").innerText = `- ${selectedAuthor}`;
+                const cardHeader = document.querySelector(".card-header");
+
+
+                // Generate a random background color
+                const randomColorIndex = Math.floor(Math.random() * colors.length);
+                const randomColorIndex2 = Math.floor(Math.random() * colors.length);
+                document.body.style.backgroundColor = colors[randomColorIndex];
+                const randomColor = colors[randomColorIndex2];
+
+                if (cardHeader) {
+                        cardHeader.style.backgroundColor = randomColor;
+                }
+
+                // Update Twitter link with the current quote
+                const twitterLink = `https://twitter.com/intent/tweet?hashtags=quotes&related=freecodecamp&text=${encodeURIComponent('"' + selectedQuote + '" - ' + selectedAuthor)}`;
+                document.getElementById("tweet-quote").href = twitterLink;
+            }
+
+            // Generate an initial quote on page load
+            genQuote();
+
+            // Assign event listener to the button
+            document.getElementById("new-quote").addEventListener("click", genQuote);
+        });
+    </script>
 </body>
 </html>
